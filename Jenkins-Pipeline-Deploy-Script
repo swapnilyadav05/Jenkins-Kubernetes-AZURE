@@ -9,7 +9,6 @@ pipeline {
         }
         stage ('deploy') {
             steps {
-                sh 'ls'
                 sh ' kubectl create -f $WORKSPACE/k8s-yaml/service-Deployment.yaml'
                 sh ' kubectl create -f $WORKSPACE/k8s-yaml/service-Service.yaml'
                 sh ' kubectl create -f $WORKSPACE/k8s-yaml/web-Deployment.yaml'
