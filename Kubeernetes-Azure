@@ -1,0 +1,122 @@
+1: install azuerCli...
+
+https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+
+#INSTALL-------
+
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
+     sudo tee /etc/apt/sources.list.d/azure-cli.list
+
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+
+sudo apt-get install apt-transport-https
+
+sudo apt-get update && sudo apt-get install azure-cli
+
+
+#UNINSTALL
+
+sudo apt-get remove azure-cli       
+
+//----------------------------------------------------------------------------------------------
+
+
+az login
+
+To sign in, use a web browser to open the page https://aka.ms/devicelogin and enter the code HLJX4XN3K to authenticate.
+[
+  {
+    "cloudName": "AzureCloud",
+    "id": "b71dcd60-5256-466d-a4e2-43806c6348d7",
+    "isDefault": true,
+    "name": "Free Trial",
+    "state": "Enabled",
+    "tenantId": "aa72f822-7f98-4f69-8cc5-0e6d707ad754",
+    "user": {
+      "name": "swapnilbyadav55@gmail.com",
+      "type": "user"
+    }
+  }
+]
+
+//set subscription
+
+az account set --subscription "b71dcd60-5256-466d-a4e2-43806c6348d7"
+
+//create Resource Group -----
+
+az group create --name "test" --location "westus" 
+
+{
+  "id": "/subscriptions/b71dcd60-5256-466d-a4e2-43806c6348d7/resourceGroups/test",
+  "location": "westus",
+  "managedBy": null,
+  "name": "test",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null
+}
+
+
+//create cluster
+
+az acs create --orchestrator-type=kubernetes \
+    --resource-group test \
+    --name=myK8sCluster \
+    --agent-count=1 \
+    --agent-vm-size Standard_D2
+
+waiting for AAD role to propagate.done
+{
+  "id": "/subscriptions/b71dcd60-5256-466d-a4e2-43806c6348d7/resourceGroups/test/providers/Microsoft.Resources/deployments/azurecli1500455919.27334269876",
+  "name": "azurecli1500455919.27334269876",
+  "properties": {
+    "correlationId": "ff435fc7-fda4-44ac-a70e-7eb477b4826e",
+    "debugSetting": null,
+    "dependencies": [],
+    "mode": "Incremental",
+    "outputs": null,
+    "parameters": {
+      "clientSecret": {
+        "type": "SecureString"
+      }
+    },
+    "parametersLink": null,
+    "providers": [
+      {
+        "id": null,
+        "namespace": "Microsoft.ContainerService",
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiVersions": null,
+            "locations": [
+              "westus"
+            ],
+            "properties": null,
+            "resourceType": "containerServices"
+          }
+        ]
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "template": null,
+    "templateLink": null,
+    "timestamp": "2017-07-19T09:26:57.043710+00:00"
+  },
+  "resourceGroup": "test"
+}
+
+
+
+
+
+// install kubernets CLI
+
+az acs kubernetes install-cli
+
+// add Credentials to Kubernets CLI
+
+az acs kubernetes get-credentials --resource-group=myResourceGroup --name=myK8sCluster

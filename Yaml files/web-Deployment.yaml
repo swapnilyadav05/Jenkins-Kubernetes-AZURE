@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: webapp
+          image: "swapnilyadav/nginx-angular:1.1"

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: service
+          image: "swapnilyadav/service:1.0"
+          ports:
+            - name: http
+              containerPort: 8080
